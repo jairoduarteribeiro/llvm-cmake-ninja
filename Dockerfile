@@ -7,6 +7,7 @@ ENV CMAKE_VERSION=3.30.3
 ENV NINJA_VERSION=1.12.1
 
 ENV PATH=/usr/lib/llvm-$LLVM_VERSION/bin:$PATH
+ENV LD_LIBRARY_PATH=/usr/lib/llvm-$LLVM_VERSION/lib:$LD_LIBRARY_PATH
 
 RUN export DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
