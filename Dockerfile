@@ -16,8 +16,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         software-properties-common \
         unzip \
         wget && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
     wget --no-check-certificate -O /tmp/llvm.sh https://apt.llvm.org/llvm.sh && \
     chmod +x /tmp/llvm.sh && \
     /tmp/llvm.sh $LLVM_VERSION all && \
@@ -36,4 +34,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     /tmp/cmake.sh --skip-license --prefix=/usr && \
     rm /tmp/cmake.sh && \
     unzip /tmp/ninja.zip -d /usr/bin && \
-    rm /tmp/ninja.zip
+    rm /tmp/ninja.zip && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
