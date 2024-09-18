@@ -36,5 +36,11 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     rm /tmp/cmake.sh && \
     unzip /tmp/ninja.zip -d /usr/bin && \
     rm /tmp/ninja.zip && \
+    apt-get remove -y --purge \
+        gnupg \
+        lsb-release \
+        software-properties-common \
+        unzip \
+        wget && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
