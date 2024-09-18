@@ -4,6 +4,7 @@ ARG TARGETARCH
 
 ENV LLVM_VERSION=18
 ENV CMAKE_VERSION=3.30.3
+ENV NINJA_VERSION=1.12.1
 
 ENV PATH=/usr/lib/llvm-$LLVM_VERSION/bin:$PATH
 
@@ -13,6 +14,7 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         gnupg \
         lsb-release \
         software-properties-common \
+        unzip \
         wget && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
@@ -21,13 +23,17 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     /tmp/llvm.sh $LLVM_VERSION all && \
     rm /tmp/llvm.sh && \
     if [ "$TARGETARCH" = "arm64" ]; then \
-        wget --no-check-certificate -O /tmp/cmake.sh https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/cmake-$CMAKE_VERSION-linux-aarch64.sh; \
+        wget --no-check-certificate -O /tmp/cmake.sh https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/cmake-$CMAKE_VERSION-linux-aarch64.sh && \
+        wget --no-check-certificate -O /tmp/ninja.zip https://github.com/ninja-build/ninja/releases/download/v$NINJA_VERSION/ninja-linux-aarch64.zip; \
     elif [ "$TARGETARCH" = "amd64" ]; then \
-        wget --no-check-certificate -O /tmp/cmake.sh https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/cmake-$CMAKE_VERSION-linux-x86_64.sh; \
+        wget --no-check-certificate -O /tmp/cmake.sh https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/cmake-$CMAKE_VERSION-linux-x86_64.sh && \
+        wget --no-check-certificate -O /tmp/ninja.zip https://github.com/ninja-build/ninja/releases/download/v$NINJA_VERSION/ninja-linux.zip; \
     else \
         echo "Unsupported architecture: $TARGETARCH"; \
         exit 1; \
     fi && \
     chmod +x /tmp/cmake.sh && \
     /tmp/cmake.sh --skip-license --prefix=/usr && \
-    rm /tmp/cmake.sh
+    rm /tmp/cmake.sh && \
+    unzip /tmp/ninja.zip -d /usr/bin && \
+    rm /tmp/ninja.zip
