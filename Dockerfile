@@ -1,6 +1,9 @@
 FROM ubuntu:22.04
 
+ARG TARGETARCH
+
 ENV LLVM_VERSION=18
+ENV CMAKE_VERSION=3.30.3
 
 ENV PATH=/usr/lib/llvm-$LLVM_VERSION/bin:$PATH
 
@@ -16,4 +19,15 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     wget --no-check-certificate -O /tmp/llvm.sh https://apt.llvm.org/llvm.sh && \
     chmod +x /tmp/llvm.sh && \
     /tmp/llvm.sh $LLVM_VERSION all && \
-    rm /tmp/llvm.sh
+    rm /tmp/llvm.sh && \
+    if [ "$TARGETARCH" = "arm64" ]; then \
+        wget --no-check-certificate -O /tmp/cmake.sh https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/cmake-$CMAKE_VERSION-linux-aarch64.sh; \
+    elif [ "$TARGETARCH" = "amd64" ]; then \
+        wget --no-check-certificate -O /tmp/cmake.sh https://github.com/Kitware/CMake/releases/download/v$CMAKE_VERSION/cmake-$CMAKE_VERSION-linux-x86_64.sh; \
+    else \
+        echo "Unsupported architecture: $TARGETARCH"; \
+        exit 1; \
+    fi && \
+    chmod +x /tmp/cmake.sh && \
+    /tmp/cmake.sh --skip-license --prefix=/usr && \
+    rm /tmp/cmake.sh
