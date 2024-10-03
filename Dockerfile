@@ -1,6 +1,9 @@
 FROM ubuntu:22.04
 
 ARG TARGETARCH
+ARG USERNAME=dev
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
 
 ENV LLVM_VERSION=18
 ENV CMAKE_VERSION=3.30.3
@@ -43,4 +46,6 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
         unzip \
         wget && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    groupadd --gid $USER_GID $USERNAME && \
+    useradd --uid $USER_UID --gid $USER_GID -m -s /bin/bash $USERNAME
