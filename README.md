@@ -37,7 +37,7 @@ Once inside the container, navigate to the mounted directory `/workspace` and us
 
 ```bash
 cd /workspace
-cmake -B build -S . -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+cmake -B build -S .
 cmake --build build
 ```
 
