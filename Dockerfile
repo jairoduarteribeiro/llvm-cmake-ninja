@@ -49,3 +49,11 @@ RUN export DEBIAN_FRONTEND=noninteractive && \
     rm -rf /var/lib/apt/lists/* && \
     groupadd --gid $USER_GID $USERNAME && \
     useradd --uid $USER_UID --gid $USER_GID -m -s /bin/bash $USERNAME
+
+ENV CC=clang
+ENV CXX=clang++
+
+ENV CXXFLAGS="-stdlib=libc++"
+ENV LDFLAGS="-lc++abi"
+
+ENV CMAKE_GENERATOR=Ninja
