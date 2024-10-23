@@ -1,7 +1,7 @@
 FROM buildpack-deps:bookworm
 
 ENV LLVM_VERSION=18 \
-    CMAKE_VERSION=3.30.4 \
+    CMAKE_VERSION=3.30.5 \
     NINJA_VERSION=1.12.1 \
     PATH=/usr/lib/llvm-$LLVM_VERSION/bin:$PATH \
     LD_LIBRARY_PATH=/usr/lib/llvm-$LLVM_VERSION/lib \
