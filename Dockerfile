@@ -2,14 +2,7 @@ FROM buildpack-deps:bookworm
 
 ENV LLVM_VERSION=18 \
     CMAKE_VERSION=3.30.5 \
-    NINJA_VERSION=1.12.1 \
-    PATH=/usr/lib/llvm-$LLVM_VERSION/bin:$PATH \
-    LD_LIBRARY_PATH=/usr/lib/llvm-$LLVM_VERSION/lib \
-    CC=clang \
-    CXX=clang++ \
-    CXXFLAGS="-stdlib=libc++" \
-    LDFLAGS="-lc++abi" \
-    CMAKE_GENERATOR=Ninja
+    NINJA_VERSION=1.12.1
 
 RUN set -eux; \
     groupadd --gid 1000 dev; \
@@ -36,3 +29,11 @@ RUN set -eux; \
     unzip /tmp/ninja.zip -d /usr/bin; \
     rm /tmp/ninja.zip; \
     rm -rf /var/lib/apt/lists/*
+
+RUN PATH=/usr/lib/llvm-$LLVM_VERSION/bin:$PATH \
+    LD_LIBRARY_PATH=/usr/lib/llvm-$LLVM_VERSION/lib \
+    CC=clang \
+    CXX=clang++ \
+    CXXFLAGS="-stdlib=libc++" \
+    LDFLAGS="-lc++abi" \
+    CMAKE_GENERATOR=Ninja
